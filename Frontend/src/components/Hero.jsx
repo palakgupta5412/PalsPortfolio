@@ -1,139 +1,217 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
-import React , {useState, useEffect} from 'react';
-import { motion } from 'framer-motion';
+// --- CONTINUOUS SCRAMBLE EFFECT ---
+const InfiniteScramble = ({ phrases }) => {
+  const [index, setIndex] = useState(0);
+  const [text, setText] = useState(phrases[0]);
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
 
-// --- REUSABLE BUTTON COMPONENT ---
-const AnimatedButton = ({ children, isColor, href, download }) => {
-  const baseClasses = "relative overflow-hidden px-24 py-3 border-[1.5px] font-sans font-semibold transition-transform hover:scale-105 group flex items-center justify-center pointer-events-auto cursor-none";
-  const themeClasses = isColor ? "border-white text-white" : "border-black text-black";
+  useEffect(() => {
+    let iteration = 0;
+    let interval;
+    const target = phrases[index];
+
+    const startAnimation = () => {
+      interval = setInterval(() => {
+        setText(target.split("").map((char, i) => {
+          if (i < iteration) return target[i];
+          return letters[Math.floor(Math.random() * 26)];
+        }).join(""));
+
+        if (iteration >= target.length) {
+          clearInterval(interval);
+          setTimeout(() => setIndex((prev) => (prev + 1) % phrases.length), 2500);
+        }
+        iteration += 1 / 3;
+      }, 40);
+    };
+
+    startAnimation();
+    return () => clearInterval(interval);
+  }, [index, phrases]);
+
+  return (
+    <span className="font-mono text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 font-bold tracking-widest text-sm md:text-lg uppercase">
+      {text}
+    </span>
+  );
+};
+
+// --- ANIMATED BUTTON ---
+const AnimatedButton = ({ children, isColor, href, download, icon }) => {
+  const baseClasses = "relative overflow-hidden px-8 py-3 border-[1.5px] rounded-lg font-sans font-semibold transition-transform group flex items-center justify-center gap-2 pointer-events-auto cursor-none";
+  const themeClasses = isColor ? "border-white text-white" : "border-gray-300 text-gray-300";
 
   const innerContent = (
     <>
-      <span className={`absolute inset-0 w-full h-full -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0 ${isColor ? 'bg-white' : 'bg-black'}`}></span>
-      <span className={`relative z-10 transition-colors duration-300 ${isColor ? 'group-hover:text-black' : 'group-hover:text-white'}`}>
+      <span className={`absolute inset-0 w-full h-full -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0 ${isColor ? 'bg-white' : 'bg-gray-300'}`}></span>
+      <span className={`relative z-10 transition-colors duration-300 flex items-center gap-2 group-hover:text-black`}>
         {children}
+        {icon && <span className="w-4 h-4 flex items-center justify-center">{icon}</span>}
       </span>
     </>
   );
 
-  if (href) {
-    return (
-      <a href={href} download={download} className={`${baseClasses} ${themeClasses}`}>
-        {innerContent}
-      </a>
-    );
-  }
-
-  return (
-    <button className={`${baseClasses} ${themeClasses}`}>
-      {innerContent}
-    </button>
-  );
+  if (href) return <a href={href} download={download} className={`${baseClasses} ${themeClasses}`}>{innerContent}</a>;
+  return <button className={`${baseClasses} ${themeClasses}`}>{innerContent}</button>;
 };
 
-// --- MAIN HERO COMPONENT ---
+// --- CONTINUOUS FLOATING BADGE (NEW) ---
+const FloatingBadge = ({ text, delay, className, isColor }) => (
+  <motion.div
+    animate={{ y: [0, -15, 0], rotate: [0, 2, -2, 0] }}
+    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay }}
+    className={`absolute px-4 py-2 backdrop-blur-md border rounded-full font-mono text-[9px] uppercase tracking-widest pointer-events-none ${isColor ? 'border-white/20 text-white bg-white/5' : 'border-gray-500/30 text-gray-400 bg-black/40'} ${className}`}
+  >
+    {text}
+  </motion.div>
+);
+
 const Hero = ({ theme }) => {
   const isColor = theme === 'color';
-  const textColor = isColor ? 'text-white' : 'text-black';
-  const mutedTextColor = isColor ? 'text-white/40' : 'text-black/60';
+  const textColor = isColor ? 'text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]' : 'text-gray-200';
+  const accentColor = isColor ? 'text-indigo-400' : 'text-indigo-400 opacity-60';
 
-  // At the top of your Hero component, add a state for time:
-const [time, setTime] = useState('');
+  // --- PARALLAX TRACKING (NEW) ---
+  const heroRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-useEffect(() => {
-  const updateTime = () => {
-    const now = new Date();
-    // Formats as "10:00 PM IST"
-    const timeString = now.toLocaleTimeString('en-US', { 
-      timeZone: 'Asia/Kolkata', 
-      hour: '2-digit', 
-      minute: '2-digit',
-      timeZoneName: 'short'
-    });
-    setTime(`DELHI, IN // ${timeString}`);
+  const handleMouseMove = (e) => {
+    if (!heroRef.current) return;
+    const { left, top, width, height } = heroRef.current.getBoundingClientRect();
+    // Normalize coordinates from -1 to 1 for parallax math
+    const x = ((e.clientX - left) / width) * 2 - 1;
+    const y = ((e.clientY - top) / height) * 2 - 1;
+    mouseX.set(x);
+    mouseY.set(y);
   };
+
+  // Parallax layers (different speeds & directions)
+  const textX1 = useSpring(useTransform(mouseX, [-1, 1], [-30, 30]), { stiffness: 100, damping: 30 });
+  const textY1 = useSpring(useTransform(mouseY, [-1, 1], [-30, 30]), { stiffness: 100, damping: 30 });
   
-  updateTime(); // Initial call
-  const interval = setInterval(updateTime, 1000 * 60); // Update every minute
-  return () => clearInterval(interval);
-}, []);
+  const textX2 = useSpring(useTransform(mouseX, [-1, 1], [40, -40]), { stiffness: 100, damping: 30 });
+  const textY2 = useSpring(useTransform(mouseY, [-1, 1], [40, -40]), { stiffness: 100, damping: 30 });
+
+  const rightBoxRef = useRef(null);
+  const [isHoveringRight, setIsHoveringRight] = useState(false);
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+  const springCursorX = useSpring(cursorX, { damping: 25, stiffness: 400 });
+  const springCursorY = useSpring(cursorY, { damping: 25, stiffness: 400 });
+
+  const handleRightMouseMove = (e) => {
+    if (!rightBoxRef.current) return;
+    const rect = rightBoxRef.current.getBoundingClientRect();
+    cursorX.set(e.clientX - rect.left);
+    cursorY.set(e.clientY - rect.top);
+  };
+
+  const ArrowUpRight = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>;
+  const ArrowDown = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>;
 
   return (
-    <section className={`w-full relative h-[600px] flex items-center justify-center overflow-hidden ${isColor ? '' : 'bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem]'}`}>
-      
-      {/* --- 1. DYNAMIC SYSTEM STATUS (Top Left) --- */}
-      <div className={`absolute top-10 left-10 flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase ${mutedTextColor}`}>
-        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-        SYS.25 // ONLINE
-      </div>
+    <section 
+      id="home" 
+      ref={heroRef}
+      onMouseMove={handleMouseMove}
+      className="w-full relative h-screen flex items-center justify-center pl-32 pt-20 overflow-hidden"
+    >
+      {/* FLOATING BACKGROUND BADGES */}
+      <FloatingBadge isColor={isColor} text="SYS.ONLINE // 2024" delay={0} className="top-[20%] left-[10%]" />
+      <FloatingBadge isColor={isColor} text="WEBGL RENDER" delay={1.5} className="bottom-[25%] left-[5%]" />
+      <FloatingBadge isColor={isColor} text="AI PIPELINES ACTIVE" delay={3} className="top-[15%] right-[40%]" />
 
-      {/* --- STATIC DECORATION (Bottom Left & Middle Right) --- */}
-      <div className={`absolute bottom-10 left-10 font-mono text-[10px] tracking-widest uppercase origin-left -rotate-90 ${mutedTextColor}`}>
-        SCROLL TO EXPLORE
-      </div>
-      <div className={`absolute top-1/2 right-10 font-mono text-[10px] tracking-widest uppercase origin-right rotate-90 ${mutedTextColor}`}>
-        {time}
-      </div>
-
-      {/* --- 2. ROTATING TECHNICAL BADGE (Bottom Right) --- */}
-      <motion.div 
-        animate={{ rotate: 360 }}
-        transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
-        className={`absolute bottom-12 right-24 w-32 h-32 pointer-events-none ${isColor ? 'text-white/30' : 'text-black/20'}`}
-      >
-        <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
-          <path id="circlePath" fill="none" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" />
-          <text className="font-mono text-[9px] uppercase tracking-[0.2em]" fill="currentColor">
-            <textPath href="#circlePath">
-              AI Engineering • Fullstack Development • 
-            </textPath>
-          </text>
-        </svg>
-      </motion.div>
-
-      {/* --- MAIN CONTENT WRAPPER WITH CROSSHAIRS --- */}
       <div className="w-full max-w-7xl mx-auto px-6 flex justify-between items-center relative z-20">
         
-        {/* 3. ENGINEERED CROSSHAIRS (Corners of the content container) */}
-        <div className={`absolute -top-12 -left-4 w-4 h-4 border-l-2 border-t-2 opacity-50 ${isColor ? 'border-white' : 'border-black'}`}></div>
-        <div className={`absolute -top-12 -right-4 w-4 h-4 border-r-2 border-t-2 opacity-50 ${isColor ? 'border-white' : 'border-black'}`}></div>
-        <div className={`absolute -bottom-12 -left-4 w-4 h-4 border-l-2 border-b-2 opacity-50 ${isColor ? 'border-white' : 'border-black'}`}></div>
-        <div className={`absolute -bottom-12 -right-4 w-4 h-4 border-r-2 border-b-2 opacity-50 ${isColor ? 'border-white' : 'border-black'}`}></div>
-
-        {/* LEFT SIDE: Text & Buttons */}
-        <div className="w-1/2 flex flex-col gap-20">
-          <div>
-            <h1 className={`text-6xl md:text-8xl font-sans font-extrabold leading-[1.05] tracking-tight ${textColor}`}>
-              CREATIVE <br /> DEVELOPER
-            </h1>
-            <p className={`mt-6 text-lg max-w-md font-sans font-medium leading-relaxed ${isColor ? 'text-gray-200' : 'text-gray-800'}`}>
-              Building high-performance AI applications and scalable web experiences with more to discover beneath the surface.
-            </p>
-          </div>
-
-          <div className="flex gap-4">
-            <AnimatedButton isColor={isColor}>
-              Hire Me
-            </AnimatedButton>
-            <AnimatedButton isColor={isColor} href="/resume.pdf" download={true}>
-              Resume
-            </AnimatedButton>
-          </div>
-        </div>
-
-        {/* RIGHT SIDE: Robot Canvas Placeholder */}
-        <div 
-          data-hoverable="true"
-          className={`w-1/3 h-[500px] rounded-3xl flex items-center justify-center transition-all duration-300 pointer-events-auto cursor-none relative overflow-hidden ${isColor ? 'bg-white/10 backdrop-blur-sm border border-white/30' : 'bg-gray-100/50 border-2 border-black/10'}`}
-        >
-          {/* Subtle grid inside the robot container */}
-          <div className={`absolute inset-0 opacity-20 ${isColor ? 'bg-[radial-gradient(circle_at_center,white_1px,transparent_1px)]' : 'bg-[radial-gradient(circle_at_center,black_1px,transparent_1px)]'} bg-[size:20px_20px]`}></div>
+        {/* --- LEFT SIDE (TYPOGRAPHY) --- */}
+        <div className="w-[60%] flex flex-col gap-2 relative z-20">
           
-          <span className={`font-mono text-sm uppercase tracking-widest relative z-10 ${isColor ? 'text-white' : 'text-black/50'}`}>
-            [ 3D Robot Canvas Here ]
-          </span>
+          {/* LAYER 1: "CREATIVE" - Slides in from left, continuously breathes, reacts to mouse */}
+          <motion.div 
+            style={{ x: textX1, y: textY1 }}
+            initial={{ opacity: 0, x: -150, filter: "blur(20px)" }}
+            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} // Snappy elastic ease
+          >
+            <h1 className={`text-[6rem] md:text-[8rem] font-sans font-black leading-[0.9] tracking-tighter ${textColor}`}>
+              <span className={`font-light opacity-80 text-[8rem] align-top ${accentColor}`}>&lt; </span>
+              CREATIVE
+            </h1>
+          </motion.div>
+
+          {/* LAYER 2: "DEVELOPER" - Slides in from right, moves opposite to mouse */}
+          <motion.div 
+            style={{ x: textX2, y: textY2 }}
+            initial={{ opacity: 0, x: 150, filter: "blur(20px)" }}
+            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="relative"
+          >
+            <h1 className={`text-[6rem] md:text-[8rem] ml-12 font-sans font-black leading-[0.9] tracking-tighter ${textColor}`}>
+              DEVELOPER
+              <span className={`font-light opacity-80 text-[8rem] align-bottom ${accentColor}`}> /&gt;</span>
+            </h1>
+
+           
+          </motion.div>
+
+          {/* Subtitle & Scramble Container */}
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+            className="mt-8 ml-14"
+          >
+            <div className="mb-2">
+              <InfiniteScramble phrases={["AI Developer", "MERN Stack Engineer", "Agentic Workflows"]} />
+            </div>
+            <p className={`text-lg max-w-md font-sans font-medium leading-relaxed ${textColor} opacity-80`}>
+              Building high-performance AI applications and scalable web experiences.
+            </p>
+
+            <div className="flex gap-4 mt-8">
+              <AnimatedButton isColor={isColor} icon={ArrowUpRight}>HIRE ME</AnimatedButton>
+              <AnimatedButton isColor={isColor} href="/resume.pdf" download icon={ArrowDown}>RESUME</AnimatedButton>
+            </div>
+          </motion.div>
+
         </div>
 
+        {/* --- RIGHT SIDE: ROBOT AREA --- */}
+        <div 
+          ref={rightBoxRef}
+          onMouseMove={handleRightMouseMove}
+          onMouseEnter={() => setIsHoveringRight(true)}
+          onMouseLeave={() => setIsHoveringRight(false)}
+          data-hoverable="true"
+          className="w-[40%] h-[600px] flex items-center justify-center relative pointer-events-auto cursor-none overflow-hidden"
+        >
+          {/* Yellow Attached Cursor */}
+          <motion.div 
+            className="absolute z-50 flex flex-col items-center justify-center pointer-events-none"
+            style={{ 
+              x: springCursorX, y: springCursorY,
+              opacity: isHoveringRight && isColor ? 1 : 0, 
+              translateX: "-50%", translateY: "-50%"
+            }}
+          >
+            <div className="w-24 h-24 bg-[#facc15] rounded-full flex flex-col items-center justify-center text-black shadow-2xl">
+              <span className="text-xl font-bold mb-1">↓</span>
+              <span className="text-[9px] font-bold uppercase text-center leading-tight px-2">Ask Me <br/> Anything</span>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            animate={{ y: [0, -20, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="relative z-20 font-mono text-sm uppercase tracking-widest text-indigo-400 font-bold"
+          >
+            [ 3D ROBOT HERE ]
+          </motion.div>
+        </div>
       </div>
     </section>
   );
