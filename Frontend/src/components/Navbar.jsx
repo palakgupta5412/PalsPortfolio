@@ -1,75 +1,69 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+// import React from 'react';
+// import { motion } from 'framer-motion';
 
-const ScrambleText = ({ text }) => {
-  const [displayText, setDisplayText] = useState(text);
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const intervalRef = useRef(null);
+// function Navbar({ theme, activeSection }) {
+//   const isColor = theme === 'color';
+//   const links = ['home', 'about', 'experience', 'contact'];
 
-  const startAnimation = () => {
-    let iteration = 0;
-    clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setDisplayText((prev) =>
-        text.split("").map((char, index) => {
-          if (index < iteration) return text[index];
-          return letters[Math.floor(Math.random() * 26)];
-        }).join("")
-      );
-      if (iteration >= text.length) clearInterval(intervalRef.current);
-      iteration += 1 / 10; 
-    }, 100); 
-  };
+//   return (
+//     <nav className="fixed top-0 w-full p-6 px-12 flex justify-between items-center z-[110] pointer-events-auto">
+//       <a href="#home" className={`text-4xl font-black uppercase tracking-tighter border-4 border-black px-3 py-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] cursor-none transition-transform hover:-translate-y-1 ${isColor ? 'bg-black text-[#ccff00]' : 'bg-white text-black'}`}>
+//         PG.
+//       </a>
 
-  useEffect(() => {
-    startAnimation();
-    return () => clearInterval(intervalRef.current);
-  }, [text]);
+//       <div className="flex items-center gap-6">
+//         {links.map((link) => {
+//           const isActive = activeSection === link;
+//           return (
+//             <a 
+//               key={link} href={`#${link}`} 
+//               className={`relative font-sans text-lg font-black uppercase px-4 py-2 border-2 border-black transition-all cursor-none ${
+//                 isActive 
+//                   ? (isColor ? 'bg-black text-[#ccff00] shadow-[4px_4px_0px_0px_#ccff00]' : 'bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]') 
+//                   : (isColor ? 'bg-transparent text-black hover:bg-black hover:text-[#ccff00]' : 'bg-white text-black hover:bg-black hover:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]')
+//               }`}
+//             >
+//               {link}
+//             </a>
+//           );
+//         })}
+//       </div>
+//     </nav>
+//   );
+// }
 
-  return (
-    <span onMouseEnter={startAnimation} className="inline-block cursor-pointer">
-      {displayText}
-    </span>
-  );
-};
+// export default Navbar;
+
+import React from 'react';
 
 function Navbar({ theme, activeSection }) {
   const isColor = theme === 'color';
-  const textColor = isColor ? 'text-white' : 'text-white';
-
-  const links = ['about', 'projects', 'contact'];
+  const links = ['home', 'about', 'experience', 'contact'];
 
   return (
-    <nav className="fixed top-0 w-full p-6 px-12 flex justify-between items-center z-50 pointer-events-auto">
-      
-      {/* Scrambling Name */}
-      <a href="#home" className="flex flex-col justify-start items-start font-mono cursor-none">
-        <h1 className={`text-4xl font-bold uppercase tracking-tight ${textColor}`}>
-          <ScrambleText text="Palak" />
-        </h1>
-        <h1 className={`text-4xl font-bold uppercase tracking-tight ml-8 ${textColor}`}>
-          <ScrambleText text="Gupta" />
-        </h1>
+    <nav className="fixed top-0 w-full p-6 px-12 flex justify-between items-center z-[110] pointer-events-auto">
+      <a href="#home" data-hoverable="true" className={`text-4xl font-black uppercase tracking-tighter border-4 px-3 py-1 cursor-none transition-transform hover:-translate-y-1 ${
+        isColor ? 'bg-white text-black border-white shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)]' : 'bg-black text-[#ccff00] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'
+      }`}>
+        PG.
       </a>
 
-      {/* Animated Scroll Links */}
-      <div className="flex items-center gap-10">
-        {links.map((link) => (
-          <a 
-            key={link}
-            href={`#${link}`} 
-            className={`relative font-sans text-lg capitalize hover:scale-110 transition-transform cursor-none ${textColor}`}
-          >
-            {link}
-            {/* The Active Underline */}
-            {activeSection === link && (
-              <motion.span 
-                layoutId="topNavUnderline"
-                className="absolute -bottom-2 left-0 w-full h-[2px] bg-indigo-500"
-              />
-            )}
-          </a>
-        ))}
+      <div className="flex items-center gap-6">
+        {links.map((link) => {
+          const isActive = activeSection === link;
+          return (
+            <a 
+              key={link} href={`#${link}`} data-hoverable="true"
+              className={`relative font-sans text-lg font-black uppercase px-4 py-2 border-2 transition-all cursor-none ${
+                isActive 
+                  ? (isColor ? 'bg-white text-black border-white' : 'bg-black text-[#00f0ff] border-black shadow-[4px_4px_0px_0px_#00f0ff]') 
+                  : (isColor ? 'bg-transparent text-white border-white hover:bg-white hover:text-black' : 'bg-white text-black border-black hover:bg-black hover:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]')
+              }`}
+            >
+              {link}
+            </a>
+          );
+        })}
       </div>
     </nav>
   );
