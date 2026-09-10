@@ -1,0 +1,50 @@
+{
+  "personal_info": "I am Palak Gupta, an Information Technology undergraduate student at Maharaja Surajmal Institute of Technology (MSIT) in New Delhi, India, and an AI & Software Engineering Intern at GoMed (Orbit Pro).",
+  "academics": "I am pursuing a Bachelor of Technology in Information Technology at Maharaja Surajmal Institute of Technology (MSIT), GGSIPU, New Delhi, expected to graduate in 2027.",
+  "experience": "I work as an AI & Software Engineering Intern at GoMed (Orbit Pro) starting in April 2026, developing agentic AI pipelines, OCR systems, and RAG architectures.",
+  "skills": "My technical skills include React, Node.js, Express.js, Next.js, FastAPI, Vite, Tailwind CSS, GSAP, Framer Motion, Three.js, Python, LangChain, LangGraph, RAG, Pydantic, OCR, Playwright, MongoDB, Firebase Firestore, Cloudinary, Gemini API, OpenAI API, LLaMA, and Groq API.",
+  "projects": [
+    {
+      "name": "Planify",
+      "description": "A productivity and lifestyle management platform featuring interactive dashboards, calendar components, and secure asset management.",
+      "technical_skills": ["MongoDB", "Express.js", "React", "Node.js", "Cloudinary", "REST APIs"],
+      "live_link": "https://planify-chi.vercel.app/",
+      "github_link": "https://github.com/palakgupta5412/Planify"
+    },
+    {
+      "name": "Better With Books",
+      "description": "An AI-driven virtual library web application that provides personalized book recommendations and features custom UI animations.",
+      "technical_skills": ["React", "Node.js", "Express.js", "MongoDB", "GSAP", "Gemini AI", "Google Books API"],
+      "live_link": "https://better-with-books.vercel.app/",
+      "github_link": "https://github.com/palakgupta5412/BetterWithBooks"
+    },
+    {
+      "name": "Intervu.ai",
+      "description": "An AI-powered resume analysis service and question generation engine designed for interview preparation.",
+      "technical_skills": ["Groq API", "Gemini API", "LLaMA", "React"],
+      "live_link": "https://intervu-ai-inky.vercel.app/",
+      "github_link": "https://github.com/payalgupta25/Intervu.ai"
+    },
+    {
+      "name": "CTRL",
+      "description": "A Manifest V3 Chrome extension utilizing real-time DOM analysis and an AI content scanner to detect web distractions and enforce focus.",
+      "technical_skills": ["JavaScript", "Chrome Extensions API", "LLaMA-3.1", "Groq API"],
+      "live_link": "",
+      "github_link": "https://github.com/palakgupta5412/CTRL"
+    },
+    {
+      "name": "Leeto AI",
+      "description": "An AI-assisted coding and learning platform project.",
+      "technical_skills": ["React", "Python", "AI APIs"],
+      "live_link": "",
+      "github_link": "https://github.com/palakgupta5412/LeetoAI"
+    },
+    {
+      "name": "Repodoc AI",
+      "description": "An AI application that analyzes GitHub code repositories to automatically generate technical documentation, setup guides, user manuals, and interview prep materials.",
+      "technical_skills": ["React", "FastAPI", "Python", "LLMs"],
+      "live_link": "",
+      "github_link": ""
+    }
+  ]
+}

@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* index.css */
 body {
   cursor: none;
@@ -17,4 +16,13 @@ body {
 html {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+/* --- FIX FOR CHAT INPUT & INTERACTIVE ELEMENTS --- */
+input, textarea, button, a, [data-hoverable="true"] {
+  cursor: text !important; /* Input fields ke liye text selection cursor */
+}
+
+button, a, [data-hoverable="true"] {
+  cursor: pointer !important; /* Buttons aur links ke liye pointer */
 }

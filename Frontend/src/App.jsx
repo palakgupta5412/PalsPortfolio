@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-
+import Chatbot from './components/Chatbot.jsx';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Projects from './pages/Projects';
+import About from './pages/About.jsx';
 import PageTransition from './components/PageTransition';
 
 // --- FLAWLESS AMOEBA MASK ---
@@ -64,11 +65,11 @@ export default function App() {
   // Dual Coordinate Mouse Tracking
   useEffect(() => {
     const handleMouseMove = (e) => { 
-      maskX.set(e.pageX); 
-      maskY.set(e.pageY); 
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
-    };
+    maskX.set(e.pageX); // Scroll offset track karega
+    maskY.set(e.pageY); 
+    cursorX.set(e.clientX);
+    cursorY.set(e.clientY);
+  };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [maskX, maskY, cursorX, cursorY]);
@@ -88,6 +89,7 @@ export default function App() {
       
       <PageTransition isAnimating={isTransitioning} targetView={transitionTargetLabel} />
 
+      {/* FIXED BUG: Wapas 'absolute' aur 'h-full' kar diya taaki scroll height match kare */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none z-50">
         <defs>
           <filter id="gooey"><feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 35 -12" result="gooey" /></filter>
@@ -107,15 +109,17 @@ export default function App() {
         </div>
         <Navbar theme="bw" activePath={location.pathname} />
         <main className="w-full">
-          {/* Routes directly embedded - NO RE-RENDERING BUGS! */}
           <Routes>
             <Route path="/" element={<Hero theme="bw" />} />
             <Route path="/projects" element={<Projects theme="bw" />} />
+            <Route path="/about" element={<About theme="bw" />} />
+            <Route path="/chatbot" element={<Chatbot theme="bw" />} />
           </Routes>
         </main>
       </div>
 
       {/* --- LAYER 2: MASK REVEAL NIGHTSKY --- */}
+      {/* FIXED BUG: Yahan bhi wapas 'absolute' kar diya */}
       <motion.div className="absolute top-0 left-0 w-full h-full pointer-events-none z-20 text-white" style={{ WebkitMaskImage: "url(#fluid-mask)", maskImage: "url(#fluid-mask)" }}>
         <div className="fixed top-0 left-0 w-full h-screen -z-10 bg-[#030514]">
           <motion.div animate={{ x: [-50, 50, -50], y: [-30, 30, -30] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }} className="absolute top-[-10%] left-[-10%] w-[800px] h-[800px] bg-[#1a237e] rounded-full blur-[120px] opacity-80" />
@@ -124,10 +128,11 @@ export default function App() {
         </div>
         <Navbar theme="color" activePath={location.pathname} />
         <main className="w-full">
-          {/* Routes directly embedded here too */}
           <Routes>
             <Route path="/" element={<Hero theme="color" />} />
             <Route path="/projects" element={<Projects theme="color" />} />
+            <Route path="/about" element={<About theme="color" />} />
+            <Route path="/chatbot" element={<Chatbot theme="color" />} />
           </Routes>
         </main>
       </motion.div>
