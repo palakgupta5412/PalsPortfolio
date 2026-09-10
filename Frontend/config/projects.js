@@ -6,7 +6,7 @@ export const projectsData = [
         'technical_skills': ['MongoDB', 'Express.js', 'React', 'Node.js', 'Cloudinary', 'REST APIs'],
         'live_link': 'https://planify-chi.vercel.app/',
         'github_link': 'https://github.com/palakgupta5412/Planify',
-        'video': '/planify.mp4',
+        'video': 'https://res.cloudinary.com/dc8ryewn6/video/upload/f_auto,q_auto/v1788980200/Screen_Recording_2026-05-26_150651_mwpypl.mp4',
         'image': ''
     },
     {
@@ -16,7 +16,7 @@ export const projectsData = [
         'technical_skills': ['React', 'Node.js', 'Express.js', 'MongoDB', 'GSAP', 'Gemini AI', 'Google Books API'],
         'live_link': 'https://better-with-books.vercel.app/',
         'github_link': 'https://github.com/palakgupta5412/BetterWithBooks',
-        'video': '/books.mp4',
+        'video': 'https://res.cloudinary.com/dc8ryewn6/video/upload/f_auto,q_auto/v1788980187/better_with_books_portfolio_jkcxaq.mp4',
         'image': ''
     },
     {
@@ -26,7 +26,7 @@ export const projectsData = [
         'technical_skills': ['Groq API', 'Gemini API', 'LLaMA', 'React'],
         'live_link': 'https://intervu-ai-inky.vercel.app/',
         'github_link': 'https://github.com/payalgupta25/Intervu.ai',
-        'video': '/gomed.mp4',
+        'video': 'https://res.cloudinary.com/dc8ryewn6/video/upload/f_auto,q_auto/v1788980185/intervu_ai_portfolio_animated_nneuvo.mp4',
         'image': ''
     },
     {
@@ -36,7 +36,7 @@ export const projectsData = [
         'technical_skills': ['JavaScript', 'Chrome Extensions API', 'LLaMA-3.1', 'Groq API'],
         'live_link': '',
         'github_link': 'https://github.com/palakgupta5412/CTRL',
-        'video': '/ctrl.mp4',
+        'video': 'https://res.cloudinary.com/dc8ryewn6/video/upload/f_auto,q_auto/v1788980191/Final_Rec_CTRL_fh7emj.mp4',
         'image': ''
     },
     {
