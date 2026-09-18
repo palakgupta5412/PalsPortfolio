@@ -6,3 +6,4 @@ chromadb
 langchain-google-genai
 pydantic
 python-dotenv
+langchain-groq
