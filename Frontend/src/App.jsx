@@ -1,144 +1,99 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import Chatbot from './components/Chatbot.jsx';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Toaster } from 'react-hot-toast';
+
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Projects from './pages/Projects';
-import About from './pages/About.jsx';
+import Cursor from './components/Cursor';
 import PageTransition from './components/PageTransition';
+import Preloader from './components/Preloader';
+import ThemeToggle from './components/ThemeToggle';
+import AiBadgeRibbon from './components/AiBadgeRibbon';
+import Footer from './components/Footer';
 
-// --- FLAWLESS AMOEBA MASK ---
-const BlobCircle = ({ config, index, mouseX, mouseY, isHovered }) => {
-  const cx = useSpring(mouseX, config);
-  const cy = useSpring(mouseY, config);
-  const idleR = index === 0 ? 12 : 0;
-  const hoverR = [80, 95, 75, 60][index];
-  const rSpring = useSpring(idleR, { stiffness: 300, damping: 25 });
-  
-  useEffect(() => {
-    if (isHovered) rSpring.set(hoverR);
-    else rSpring.set(idleR);
-  }, [isHovered, hoverR, idleR, rSpring]);
+// Pages
+import Home from './pages/Home';
+import About from './pages/About';
+import Experience from './pages/Experience';
+import Projects from './pages/Projects';
+import Contact from './pages/Contact';
+import Chatbot from './components/Chatbot';
 
-  const clampedR = useTransform(rSpring, (v) => Math.max(0, v));
-  const offsetX = [0, 35, -30, 20][index];
-  const offsetY = [0, -35, 25, 40][index];
-
-  return <motion.circle cx={cx} cy={cy} r={clampedR} animate={{ x: isHovered ? offsetX : 0, y: isHovered ? offsetY : 0 }} transition={{ x: { type: "spring", damping: 15, stiffness: 250 }, y: { type: "spring", damping: 15, stiffness: 250 } }} fill="white" />;
-};
-
-// Main App Component
 export default function App() {
+  const [theme, setTheme] = useState(() => localStorage.getItem('portfolio_theme') || 'bw');
+  const [isSiteLoading, setIsSiteLoading] = useState(true);
+  const [pageTransition, setPageTransition] = useState({ isAnimating: false, label: '', path: '' });
+  
   const navigate = useNavigate();
   const location = useLocation();
-  
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [transitionTargetLabel, setTransitionTargetLabel] = useState('HOME');
-  
-  const maskX = useMotionValue(0);
-  const maskY = useMotionValue(0);
-  const cursorX = useMotionValue(0);
-  const cursorY = useMotionValue(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const isColor = theme === 'color';
 
-  // Router-Aware Transition Listener
   useEffect(() => {
-    const handleTransition = (e) => {
+    localStorage.setItem('portfolio_theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
+    const handleTransitionEvent = (e) => {
       const { path, label } = e.detail;
-      if (path === location.pathname) return;
-
-      setTransitionTargetLabel(label);
-      setIsTransitioning(true);
-
+      setPageTransition({ isAnimating: true, label, path });
       setTimeout(() => {
-        navigate(path); 
-        window.scrollTo(0, 0); 
-        setTimeout(() => setIsTransitioning(false), 500); 
-      }, 1000); 
+        navigate(path);
+      }, 400);
+      setTimeout(() => {
+        setPageTransition({ isAnimating: false, label: '', path: '' });
+      }, 900);
     };
 
-    window.addEventListener('pageTransition', handleTransition);
-    return () => window.removeEventListener('pageTransition', handleTransition);
-  }, [location.pathname, navigate]);
-
-  // Dual Coordinate Mouse Tracking
-  useEffect(() => {
-    const handleMouseMove = (e) => { 
-    maskX.set(e.pageX); // Scroll offset track karega
-    maskY.set(e.pageY); 
-    cursorX.set(e.clientX);
-    cursorY.set(e.clientY);
-  };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [maskX, maskY, cursorX, cursorY]);
-
-  useEffect(() => {
-    const handleMouseOver = (e) => setIsHovered(!!e.target.closest('[data-hoverable="true"]'));
-    window.addEventListener('mouseover', handleMouseOver);
-    return () => window.removeEventListener('mouseover', handleMouseOver);
-  }, []);
-
-  const cursorSpringX = useSpring(cursorX, { stiffness: 600, damping: 20 });
-  const cursorSpringY = useSpring(cursorY, { stiffness: 600, damping: 20 });
-  const springConfigs = [{ stiffness: 900, damping: 25 }, { stiffness: 700, damping: 30 }, { stiffness: 500, damping: 35 }, { stiffness: 300, damping: 40 }];
+    window.addEventListener('pageTransition', handleTransitionEvent);
+    return () => window.removeEventListener('pageTransition', handleTransitionEvent);
+  }, [navigate]);
 
   return (
-    <div className="relative w-full min-h-screen bg-[#F4F4F0] cursor-none selection:bg-black selection:text-[#00f0ff] overflow-clip">
+    <div 
+      style={{ backgroundColor: isColor ? '#030514' : '#F4F4F0', color: isColor ? '#ffffff' : '#000000' }}
+      className="relative w-full min-h-screen transition-colors duration-700 overflow-x-hidden"
+    >
       
-      <PageTransition isAnimating={isTransitioning} targetView={transitionTargetLabel} />
+      {/* Toast Notification Container */}
+      <Toaster position="top-center" reverseOrder={false} />
 
-      {/* FIXED BUG: Wapas 'absolute' aur 'h-full' kar diya taaki scroll height match kare */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-50">
-        <defs>
-          <filter id="gooey"><feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 35 -12" result="gooey" /></filter>
-          <mask id="fluid-mask" maskUnits="userSpaceOnUse">
-            <rect width="100%" height="100%" fill="black" />
-            <g filter="url(#gooey)">
-              {springConfigs.map((config, index) => <BlobCircle key={index} config={config} index={index} mouseX={maskX} mouseY={maskY} isHovered={isHovered} />)}
-            </g>
-          </mask>
-        </defs>
-      </svg>
+      {/* 1. Initial Site Preloader */}
+      <AnimatePresence>
+        {isSiteLoading && (
+          <Preloader onComplete={() => setIsSiteLoading(false)} />
+        )}
+      </AnimatePresence>
 
-      {/* --- LAYER 1: BASE CREAM --- */}
-      <div className="relative w-full z-10 text-black">
-        <div className="fixed top-0 left-0 w-full h-screen -z-10 bg-[#F4F4F0]">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000006_2px,transparent_2px),linear-gradient(to_bottom,#00000006_2px,transparent_2px)] bg-[size:40px_40px]"></div>
-        </div>
-        <Navbar theme="bw" activePath={location.pathname} />
-        <main className="w-full">
-          <Routes>
-            <Route path="/" element={<Hero theme="bw" />} />
-            <Route path="/projects" element={<Projects theme="bw" />} />
-            <Route path="/about" element={<About theme="bw" />} />
-            <Route path="/chatbot" element={<Chatbot theme="bw" />} />
-          </Routes>
-        </main>
-      </div>
+      {/* 2. Custom Cursor */}
+      <Cursor />
 
-      {/* --- LAYER 2: MASK REVEAL NIGHTSKY --- */}
-      {/* FIXED BUG: Yahan bhi wapas 'absolute' kar diya */}
-      <motion.div className="absolute top-0 left-0 w-full h-full pointer-events-none z-20 text-white" style={{ WebkitMaskImage: "url(#fluid-mask)", maskImage: "url(#fluid-mask)" }}>
-        <div className="fixed top-0 left-0 w-full h-screen -z-10 bg-[#030514]">
-          <motion.div animate={{ x: [-50, 50, -50], y: [-30, 30, -30] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }} className="absolute top-[-10%] left-[-10%] w-[800px] h-[800px] bg-[#1a237e] rounded-full blur-[120px] opacity-80" />
-          <motion.div animate={{ x: [50, -50, 50], y: [30, -30, 30] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2 }} className="absolute bottom-[-10%] right-[-10%] w-[800px] h-[800px] bg-[#4a148c] rounded-full blur-[150px] opacity-60" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,white_1px,transparent_1px)] bg-[size:50px_50px] opacity-30"></div>
-        </div>
-        <Navbar theme="color" activePath={location.pathname} />
-        <main className="w-full">
-          <Routes>
-            <Route path="/" element={<Hero theme="color" />} />
-            <Route path="/projects" element={<Projects theme="color" />} />
-            <Route path="/about" element={<About theme="color" />} />
-            <Route path="/chatbot" element={<Chatbot theme="color" />} />
-          </Routes>
-        </main>
-      </motion.div>
+      {/* 3. Page Transition Animation Curtain */}
+      <PageTransition isAnimating={pageTransition.isAnimating} targetView={pageTransition.label || 'HOME'} />
 
-      {/* FIXED CURSOR DOT */}
-      <motion.div className="fixed top-0 left-0 w-4 h-4 bg-black border-2 border-white shadow-[0_0_4px_rgba(0,0,0,0.3)] rounded-full pointer-events-none z-[9999]" style={{ x: cursorSpringX, y: cursorSpringY, translateX: "-50%", translateY: "-50%", scale: isHovered ? 0 : 1, opacity: isHovered ? 0 : 1, transition: "transform 0.2s ease-out, opacity 0.2s ease-out" }} />
+      {/* 4. Global Fixed Sticky AI Button on Left Screen Wall */}
+      <AiBadgeRibbon theme={theme} />
+
+      {/* 5. Floating Bottom-Right Theme Toggle Button */}
+      <ThemeToggle theme={theme} setTheme={setTheme} />
+
+      {/* 6. Navbar */}
+      <Navbar theme={theme} activePath={location.pathname} />
+
+      {/* 7. Main Application Routes */}
+      <main className="w-full">
+        <Routes>
+          <Route path="/" element={<Home theme={theme} />} />
+          <Route path="/about" element={<About theme={theme} />} />
+          <Route path="/experience" element={<Experience theme={theme} />} />
+          <Route path="/projects" element={<Projects theme={theme} />} />
+          <Route path="/contact" element={<Contact theme={theme} />} />
+          <Route path="/chatbot" element={<Chatbot theme={theme} />} />
+        </Routes>
+      </main>
+
+      {/* 8. Footer Hidden on Chatbot Page */}
+      {location.pathname !== '/chatbot' && <Footer theme={theme} />}
+
     </div>
   );
 }

@@ -1,48 +1,55 @@
 {
-  "personal_info": "I am Palak Gupta, an Information Technology undergraduate student at Maharaja Surajmal Institute of Technology (MSIT) in New Delhi, India, and an AI & Software Engineering Intern at GoMed (Orbit Pro).",
+  "personal_info": "I am Palak Gupta, an Information Technology undergraduate student at Maharaja Surajmal Institute of Technology (MSIT) in New Delhi, India, and an AI & Software Engineering Intern.",
   "academics": "I am pursuing a Bachelor of Technology in Information Technology at Maharaja Surajmal Institute of Technology (MSIT), GGSIPU, New Delhi, expected to graduate in 2027.",
-  "experience": "I work as an AI & Software Engineering Intern at GoMed (Orbit Pro) starting in April 2026, developing agentic AI pipelines, OCR systems, and RAG architectures.",
-  "skills": "My technical skills include React, Node.js, Express.js, Next.js, FastAPI, Vite, Tailwind CSS, GSAP, Framer Motion, Three.js, Python, LangChain, LangGraph, RAG, Pydantic, OCR, Playwright, MongoDB, Firebase Firestore, Cloudinary, Gemini API, OpenAI API, LLaMA, and Groq API.",
+  "experience": "I work as an AI & Software Engineering Intern starting in April 2026, developing gen AI pipelines, OCR systems, and RAG architectures.",
+  "skills": "My technical skills include React, Node.js, Express.js, FastAPI, Vite, Tailwind CSS, GSAP, Framer Motion, Three.js, Python, LangChain, LangGraph, RAG, Pydantic, OCR, Playwright, MongoDB, Firebase, Cloudinary, Gemini API, OpenAI API, and Groq API.",
   "projects": [
     {
       "name": "Planify",
-      "description": "A productivity and lifestyle management platform featuring interactive dashboards, calendar components, and secure asset management.",
+      "description": ["Developed a full-stack MERN productivity platform featuring dynamic task categorization, interactive       calendar integrations,and progress tracking.","Engineered secure and scalable REST APIs with Node.js and Express, facilitating seamless data flow, robust authentication, and analytics visualization.", "Integrated Cloudinary for optimized, cloud-based media storage, significantly reducing server payload while enabling a responsive ”Portrait Gallery” for visualizing user goals."],
       "technical_skills": ["MongoDB", "Express.js", "React", "Node.js", "Cloudinary", "REST APIs"],
       "live_link": "https://planify-chi.vercel.app/",
       "github_link": "https://github.com/palakgupta5412/Planify"
     },
     {
       "name": "Better With Books",
-      "description": "An AI-driven virtual library web application that provides personalized book recommendations and features custom UI animations.",
+      "description": ["Architected a MERN-stack virtual library and reading tracker, leveraging GSAP and Framer Motion to engineer a responsive UI with 60fps layout transitions and complex micro-interactions.", "Integrated the Google Books API and Gemini LLM to construct an intelligent recommendation engine, utilizing MongoDB embedded documents to efficiently map and store dynamic user data.", "Engineered an authentication pipeline utilizing JSON Web Tokens (JWT) and secure, HTTP-only cookies, implementing custom Express.js middleware and dynamic CORS configuration."],
       "technical_skills": ["React", "Node.js", "Express.js", "MongoDB", "GSAP", "Gemini AI", "Google Books API"],
       "live_link": "https://better-with-books.vercel.app/",
       "github_link": "https://github.com/palakgupta5412/BetterWithBooks"
     },
     {
       "name": "Intervu.ai",
-      "description": "An AI-powered resume analysis service and question generation engine designed for interview preparation.",
-      "technical_skills": ["Groq API", "Gemini API", "LLaMA", "React"],
+      "description": ["Architected an AI-powered interview engine orchestrating parallel LangChain pipelines. Aggregated LLM-generated Knowledge Graphs with Tavily web-retrieval to formulate 150+ targeted questions per skill.", "Engineered a repository evaluation pipeline using the GitHub API and AST parsing. Leveraged Groq LLMs to analyze core logic and routing architecture, formulating 50-100 highly contextual technical questions.", "Built a session-driven AI chatbot for real-time technical follow-ups, utilizing browser caching to maintain strictly isolated chat contexts."],
+      "technical_skills": ["Groq API", "Gemini API", "React"],
       "live_link": "https://intervu-ai-inky.vercel.app/",
       "github_link": "https://github.com/payalgupta25/Intervu.ai"
     },
     {
       "name": "CTRL",
-      "description": "A Manifest V3 Chrome extension utilizing real-time DOM analysis and an AI content scanner to detect web distractions and enforce focus.",
+      "description": ["Developed a Manifest V3 Chrome Extension with React and Tailwind CSS to enforce study sessions by instantly replacing distracting webpages with custom warning screens.", "Integrated the blazing-fast Groq API (LLaMA-3.1) to perform asynchronous, real-time DOM text scraping and contextual intent analysis, intercepting distracting content within milliseconds.", "Architected a memory-safe, stateless heartbeat engine via the chrome.alarms API to bypass background script limitations, powering an unbreakable ”Deep Work Vault” to strictly enforce focus sessions."],
       "technical_skills": ["JavaScript", "Chrome Extensions API", "LLaMA-3.1", "Groq API"],
       "live_link": "",
       "github_link": "https://github.com/palakgupta5412/CTRL"
     },
     {
       "name": "Leeto AI",
-      "description": "An AI-assisted coding and learning platform project.",
+      "description": ["Architected an Advanced AI RAG Pipeline: Engineered a full-stack educational tool using FastAPI, React, and LangChain, integrating ChromaDB and HuggingFace embeddings with MMR (Maximal Marginal Relevance) search to extract diverse, hallucination-free DSA cheat sheets from master and custom user-uploaded PDFs.", "Developed a Stateless Context-Aware AI Mentor: Integrated Llama-3.1 (via Groq API) to build a real-time conversational agent that maintains chat history and dynamically references on-screen markdown notes to solve complex Competitive Programming doubts with near-zero latency.", "Built 'The Algorithmic Codex' via GraphQL: Seamlessly integrated the LeetCode GraphQL API to fetch real-time problem sets, utilizing multi-step LLM prompting to cluster questions and automatically generate executable, multi-language (C++, Java, Python) foundational code skeletons.", "Designed a Premium Interactive UI: Created a highly responsive and animated frontend using Tailwind CSS and Framer Motion, featuring expandable markdown-rendered notes, real-time code copy functionality, and robust exception handling (e.g., blocking non-OCR scanned PDFs)."],
       "technical_skills": ["React", "Python", "AI APIs"],
       "live_link": "",
       "github_link": "https://github.com/palakgupta5412/LeetoAI"
     },
     {
       "name": "Repodoc AI",
-      "description": "An AI application that analyzes GitHub code repositories to automatically generate technical documentation, setup guides, user manuals, and interview prep materials.",
-      "technical_skills": ["React", "FastAPI", "Python", "LLMs"],
+      "description": ["Engineered RepoDoc AI, an autonomous, full-stack documentation and codebase auditing platform using FastAPI and React (Vite), integrating GitPython for seamless remote repository ingestion.", "Implemented a multi-mode AI generation engine powered by Google Gemini 1.5-flash and LangChain to automatically produce professional READMEs, structured local setup user manuals, and production readiness audits.", "Designed an interactive AI refinement loop allowing users to provide real-time feedback and append instructions, alongside a client-side PDF export utility using jsPDF.", "Built a responsive, modern dark-mode UI with Tailwind CSS featuring recent search history caching via localStorage for a frictionless, open-access user experience."],
+      "technical_skills": ["React", "FastAPI", "Python", "LLMs", "Tailwind CSS", "jsPDF", "GitPython", "Langchain"],
+      "live_link": "",
+      "github_link": ""
+    },
+    {
+      "name": "GO-MED Agentic AI Pipeline",
+      "description": ["Architected and developed Agentic AI pipelines using Python, LangChain, multimodal LLMs, RAG, and Playwright to automate browser-based workflows for image generation, structured data extraction, and medical content generation.", "Built Intelligent Document Processing (IDP) workflows to parse large-scale source material (PDFs), extracting previous-year questions, answers, options, explanations, and diagrams into validated JSON schemas enforced with Pydantic, enabling seamless integration into the question bank database.", "Engineered vision-model powered pipelines that ingested images directly from PDFs, applying prompt-chaining strategies to transform raw diagrams into contextual MCQs with explanations and options, ensuring schema-aligned outputs for seamless database integration.", "Automated note generation workflows by leveraging Playwright with Chromium browser, replacing manual processes with scripted pipelines that dynamically extracted and generated content, significantly reducing effort and improving scalability."],
+      "technical_skills": ["Python", "LangChain", "RAG", "OCR", "Multimodal AI", "Playwright", "Multi-Vision Modal", ""],
       "live_link": "",
       "github_link": ""
     }

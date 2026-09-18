@@ -1,15 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = ({ theme, activePath }) => {
   const isColor = theme === 'color';
+  // High contrast text colors for both themes
   const textColor = isColor ? 'text-white' : 'text-black';
   const borderColor = isColor ? 'border-white' : 'border-black';
 
   const handleNavClick = (e, path, label) => {
     e.preventDefault();
     if (activePath !== path) {
-      // Send both path for router, and label for transition text
       window.dispatchEvent(new CustomEvent('pageTransition', { detail: { path, label } }));
     }
   };
@@ -22,18 +23,21 @@ const Navbar = ({ theme, activePath }) => {
   ];
 
   return (
-    <nav className="absolute top-0 left-0 w-full p-8 z-50 flex justify-between items-center pointer-events-auto">
+    <nav className="absolute top-0 left-0 w-full p-6 md:p-8 z-50 flex justify-between items-center pointer-events-auto">
+      
+      {/* Brand Logo */}
       <motion.div 
         whileHover={{ scale: 1.05, rotate: -2 }}
         onClick={(e) => handleNavClick(e, '/', 'HOME')}
-        className={`font-black text-3xl tracking-tighter border-4 px-3 py-1 cursor-pointer ${borderColor} ${
-          isColor ? 'bg-transparent text-[#ccff00]' : 'bg-black text-[#ccff00]'
+        className={`font-black text-2xl md:text-3xl tracking-tighter border-4 px-3 py-1 cursor-pointer ${borderColor} ${
+          isColor ? 'bg-black text-[#ccff00]' : 'bg-black text-[#ccff00]'
         }`}
       >
         PG.
       </motion.div>
 
-      <div className="flex items-center gap-6">
+      {/* Navigation Links */}
+      <div className="flex items-center gap-3 md:gap-6">
         {navItems.map((item) => {
           const isActive = activePath === item.path;
           return (
@@ -41,7 +45,7 @@ const Navbar = ({ theme, activePath }) => {
               key={item.label}
               href={item.path}
               onClick={(e) => handleNavClick(e, item.path, item.label)}
-              className={`relative px-4 py-2 font-sans font-black uppercase text-sm border-2 transition-all duration-300 ${
+              className={`relative px-3 py-1.5 md:px-4 md:py-2 font-sans font-black uppercase text-xs md:text-sm border-2 transition-all duration-300 ${
                 isActive 
                   ? (isColor ? 'bg-white text-black border-white' : 'bg-black text-white border-black')
                   : `bg-transparent ${textColor} ${borderColor} hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_${isColor ? 'rgba(255,255,255,1)' : 'rgba(0,0,0,1)'}]`
@@ -57,14 +61,16 @@ const Navbar = ({ theme, activePath }) => {
           href="/contact"
           onClick={(e) => handleNavClick(e, '/contact', 'CONTACT')}
           className={`flex items-center justify-center p-2 border-2 transition-all duration-300 hover:-translate-y-1 hover:rotate-12 ${borderColor} ${
-            isColor ? 'bg-transparent text-white hover:bg-white hover:text-black' : 'bg-black text-white hover:bg-[#ff00ea] hover:text-white hover:border-[#ff00ea]'
+            isColor ? 'bg-white/10 text-white hover:bg-white hover:text-black' : 'bg-black text-white hover:bg-[#ff00ea] hover:text-white hover:border-[#ff00ea]'
           }`}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"></line>
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
         </a>
+
+        <ThemeToggle />
       </div>
     </nav>
   );

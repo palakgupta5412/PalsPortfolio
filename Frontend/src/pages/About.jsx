@@ -183,27 +183,37 @@ const About = ({ theme }) => {
         {/* =========================================
             SECTION 1: BIO & STATUS
             ========================================= */}
-        <section className="w-full flex flex-col items-start gap-8 mt-10">
-          <VectorHeading text="Palak Gupta" isColor={isColor} />
+        <section className="w-full flex flex-col items-start gap-12 mt-10">
           
-          <div className="flex flex-col md:flex-row gap-8 items-start w-full">
-            <p className={`font-sans text-xl md:text-2xl max-w-3xl leading-relaxed font-medium ${mutedText}`}>
+          {/* Balanced Split Header: Name on left, Creative Tech Badge Grid on right */}
+          <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <div className="lg:col-span-8 flex flex-col items-start">
+              <VectorHeading text="Palak Gupta" isColor={isColor} />
+            </div>
+
+            {/* Right side decorative element balancing the whitespace */}
+            <div className="lg:col-span-4 flex flex-col gap-4">
+              <div className={`p-5 rounded-3xl border-2 flex flex-col gap-3 shadow-lg ${borderColor} ${isColor ? 'bg-[#0a0e29]/80 text-white' : 'bg-white text-black'}`}>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs uppercase tracking-widest text-cyan-400 font-bold">// FOCUS.SYS</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+                </div>
+                <p className="font-sans text-xs font-semibold leading-relaxed opacity-80">
+                  Engineering high-performance full-stack architectures & multi-agent AI systems.
+                </p>
+              </div>
+            </div>
+
+          </div>
+          
+          <div className="w-full border-t border-dashed border-gray-500/30 pt-8">
+            <p className={`font-sans text-xl md:text-2xl max-w-4xl leading-relaxed font-medium ${mutedText}`}>
               I'm an IT student at MSIT and currently interning at Orbit Pro. I love building websites that look amazing and creating smart AI tools that solve real problems. Simply put, I turn good ideas into great digital experiences.
             </p>
-            
-            <div className={`mt-2 md:mt-0 px-6 py-4 rounded-2xl border-2 flex flex-col gap-2 min-w-[250px] bg-white shadow-sm ${borderColor} ${isColor ? 'bg-[#0a0e29]' : ''}`}>
-              <div className="flex items-center gap-3">
-                <div className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                </div>
-                <span className={`font-mono text-xs font-bold uppercase tracking-widest ${textColor}`}>Status</span>
-              </div>
-              <span className={`font-sans font-bold text-lg ${textColor}`}>Intern @ Orbit Pro</span>
-            </div>
           </div>
         </section>
-
+        
         {/* =========================================
             SECTION 2: THE TECHNICAL ARSENAL (BENTO GRID)
             ========================================= */}

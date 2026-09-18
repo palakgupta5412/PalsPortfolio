@@ -1,40 +1,70 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 function Cursor() {
-  // 1. useMotionValue tracks the raw numbers without triggering React re-renders
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+  const [hoverLabel, setHoverLabel] = useState("");
 
-  // 2. useSpring adds real-world physics (damping and stiffness) for a smooth trailing effect
   const springConfig = { damping: 25, stiffness: 700, mass: 0.5 };
   const cursorX = useSpring(mouseX, springConfig);
   const cursorY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      // Update the motion values directly
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
     };
 
+    const handleMouseOver = (e) => {
+      const target = e.target.closest('[data-cursor-label]');
+      if (target) {
+        setHoverLabel(target.getAttribute('data-cursor-label'));
+      } else {
+        setHoverLabel("");
+      }
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseover', handleMouseOver);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseover', handleMouseOver);
     };
-  }, []);
+  }, [mouseX, mouseY]);
 
   return (
-    <motion.div 
-      className="w-3 h-3 mix-blend-difference bg-black pointer-events-none fixed z-[9999]"
-      style={{ 
-        x: cursorX, 
-        y: cursorY,
-        translateX: "-50%", // Centers the dot perfectly on the mouse tip
-        translateY: "-50%"
-      }}
-    />
+    <>
+      {hoverLabel ? (
+        <motion.div
+          className="fixed pointer-events-none z-[99999] rounded-full bg-yellow-500 text-black font-mono font-black text-[10px] uppercase flex items-center justify-center p-3 text-center shadow-xl border-2 border-black"
+          style={{
+            x: cursorX,
+            y: cursorY,
+            translateX: "-50%",
+            translateY: "-50%",
+            width: "80px",
+            height: "80px"
+          }}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 400, damping: 20 }}
+        >
+          {hoverLabel}
+        </motion.div>
+      ) : (
+        <motion.div 
+          className="w-3.5 h-3.5 mix-blend-difference bg-white rounded-full pointer-events-none fixed z-[99999]"
+          style={{ 
+            x: cursorX, 
+            y: cursorY, 
+            translateX: "-50%", 
+            translateY: "-50%" 
+          }}
+        />
+      )}
+    </>
   );
 }
 

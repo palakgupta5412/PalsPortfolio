@@ -1,0 +1,10 @@
+# Global node_modules & dist
+node_modules/
+dist/
+build/
+
+# Environment files across all folders
+.env
+**/ .env
+Backend/.env
+Frontend/.env
