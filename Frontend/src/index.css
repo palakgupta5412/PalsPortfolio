@@ -18,6 +18,12 @@ html {
   scrollbar-width: none;  /* Firefox */
 }
 
+@media (max-width: 767px), (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
 /* --- FIX FOR CHAT INPUT & INTERACTIVE ELEMENTS --- */
 input, textarea, button, a, [data-hoverable="true"] {
   cursor: text !important; /* Input fields ke liye text selection cursor */

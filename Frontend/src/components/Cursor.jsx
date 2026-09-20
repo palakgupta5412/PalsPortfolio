@@ -38,7 +38,7 @@ function Cursor() {
     <>
       {hoverLabel ? (
         <motion.div
-          className="fixed pointer-events-none z-[99999] rounded-full bg-yellow-500 text-black font-mono font-black text-[10px] uppercase flex items-center justify-center p-3 text-center shadow-xl border-2 border-black"
+          className="custom-cursor hidden md:flex fixed pointer-events-none z-[99999] rounded-full bg-yellow-500 text-black font-mono font-black text-[10px] uppercase items-center justify-center p-3 text-center shadow-xl border-2 border-black"
           style={{
             x: cursorX,
             y: cursorY,
@@ -55,7 +55,7 @@ function Cursor() {
         </motion.div>
       ) : (
         <motion.div 
-          className="w-3.5 h-3.5 mix-blend-difference bg-white rounded-full pointer-events-none fixed z-[99999]"
+          className="custom-cursor hidden md:block w-3.5 h-3.5 mix-blend-difference bg-white rounded-full pointer-events-none fixed z-[99999]"
           style={{ 
             x: cursorX, 
             y: cursorY, 

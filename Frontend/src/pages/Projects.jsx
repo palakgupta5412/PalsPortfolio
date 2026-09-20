@@ -24,7 +24,7 @@ const ProjectCard = ({ project, index, activeIndex, totalProjects, isColor, text
       }}
       transition={{ type: 'spring', stiffness: 260, damping: 28, mass: 0.7 }}
       data-hoverable="true" 
-      className={`absolute w-full max-w-sm md:max-w-md aspect-video border-4 flex items-center justify-center overflow-hidden origin-center ${distance === 0 ? 'max-md:!opacity-100' : 'max-md:!opacity-0'} ${
+      className={`absolute w-full max-w-[300px] md:max-w-md aspect-video border-4 flex items-center justify-center overflow-hidden origin-center ${distance === 0 ? 'max-md:!opacity-100' : 'max-md:!opacity-0'} ${
         isColor ? 'border-white bg-[#030514] shadow-[12px_12px_0px_0px_rgba(255,255,255,0.2)]' : 'border-black bg-[#F4F4F0] shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]'
       }`}
     >
@@ -77,7 +77,7 @@ const Projects = ({ theme }) => {
       <div className="h-screen w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between px-6 md:px-10 pt-16 pb-3 md:py-0 pointer-events-none overflow-hidden">
         
         {/* LEFT COLUMN */}
-        <div className="w-full md:w-[45%] lg:w-[40%] h-[56%] md:h-full flex flex-col justify-center relative pointer-events-auto pr-0 md:pr-8">
+        <div className="z-20 w-full md:w-[45%] lg:w-[40%] h-[65%] md:h-full flex flex-col justify-start md:justify-center pt-20 md:pt-0 relative pointer-events-auto pr-0 md:pr-8">
           <button 
             onClick={goBack}
             data-hoverable="true"
@@ -96,7 +96,7 @@ const Projects = ({ theme }) => {
               animate={{ opacity: 1, x: 0 }} 
               exit={{ opacity: 0, x: 30 }} 
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="flex flex-col gap-3 md:gap-5 pt-8 md:pt-0"
+              className="flex flex-col gap-3 md:gap-5"
             >
               <div className="flex items-center gap-4">
                 <span className={`font-mono text-lg md:text-xl font-black px-3 py-1 md:px-4 md:py-2 ${isColor ? 'bg-[#00f0ff] text-black' : 'bg-black text-[#ccff00]'}`}>
@@ -107,29 +107,29 @@ const Projects = ({ theme }) => {
                 </span>
               </div>
 
-              <h2 className={`text-4xl md:text-6xl lg:text-7xl font-sans font-black leading-[0.9] tracking-tighter uppercase ${textColor}`}>
+              <h2 className={`text-3xl md:text-6xl lg:text-7xl font-sans font-black leading-[0.9] tracking-tighter uppercase ${textColor}`}>
                 {activeProject.project_name}
               </h2>
               
-              <p className={`mt-1 text-sm md:text-lg font-mono font-medium max-w-md ${isColor ? 'text-gray-300' : 'text-gray-700'}`}>
+              <p className={`mt-1 text-xs leading-snug md:text-lg md:leading-normal font-mono font-medium max-w-md ${isColor ? 'text-gray-300' : 'text-gray-700'}`}>
                 {activeProject.desc}
               </p>
 
               <div className="flex gap-2 mt-2 flex-wrap">
                 {(activeProject.technical_skills || []).map((t, i) => (
-                  <span key={i} className={`font-mono text-xs md:text-sm font-black border-2 border-black px-2.5 py-0.5 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] ${isColor ? 'shadow-white/30 border-white' : ''} ${techColors[i % techColors.length]}`}>
+                  <span key={i} className={`font-mono text-[10px] md:text-sm font-black border-2 border-black px-2 py-0.5 md:px-2.5 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] ${isColor ? 'shadow-white/30 border-white' : ''} ${techColors[i % techColors.length]}`}>
                     {t}
                   </span>
                 ))}
               </div>
 
-              <div className="mt-3 md:mt-6 flex flex-row md:flex-col gap-3">
+              <div className="mt-1 md:mt-6 flex flex-row md:flex-col gap-3">
                 {activeProject.live_link && (
                   <a href={activeProject.live_link} target="_blank" rel="noreferrer" className="group flex items-center gap-3 w-max cursor-pointer" data-hoverable="true">
                     <div className={`w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border-4 ${isColor ? 'border-white text-white' : 'border-black text-black'} group-hover:bg-[#ff00ea] group-hover:border-[#ff00ea] group-hover:text-white transition-all`}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                     </div>
-                    <span className={`hidden sm:inline font-sans font-black text-xl md:text-2xl uppercase tracking-tighter ${textColor} group-hover:text-[#ff00ea] transition-colors`}>Launch Site</span>
+                    <span className={`font-sans font-black text-xs md:text-2xl uppercase tracking-tighter ${textColor} group-hover:text-[#ff00ea] transition-colors`}>Launch Site</span>
                   </a>
                 )}
                 {activeProject.github_link && (
@@ -137,7 +137,7 @@ const Projects = ({ theme }) => {
                     <div className={`w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full border-4 ${isColor ? 'border-white text-white' : 'border-black text-black'} group-hover:bg-[#00f0ff] group-hover:border-[#00f0ff] group-hover:text-black transition-all`}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </div>
-                    <span className={`hidden sm:inline font-sans font-black text-xl md:text-2xl uppercase tracking-tighter ${textColor} group-hover:text-[#00f0ff] transition-colors`}>View Source</span>
+                    <span className={`font-sans font-black text-xs md:text-2xl uppercase tracking-tighter ${textColor} group-hover:text-[#00f0ff] transition-colors`}>View Source</span>
                   </a>
                 )}
               </div>
@@ -146,7 +146,7 @@ const Projects = ({ theme }) => {
         </div>
 
         {/* CENTER COLUMN: CARD STACK WITH FADE EFFECT */}
-        <div className="w-full md:w-[45%] h-[44%] md:h-full flex items-center justify-center relative pointer-events-auto">
+        <div className="z-10 w-full md:w-[45%] h-[35%] md:h-full flex items-center justify-center relative pointer-events-auto">
           {projectsData.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} activeIndex={activeIndex} totalProjects={N} isColor={isColor} textColor={textColor} />
           ))}
