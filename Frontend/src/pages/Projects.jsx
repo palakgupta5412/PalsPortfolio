@@ -78,16 +78,7 @@ const Projects = ({ theme }) => {
         
         {/* LEFT COLUMN */}
         <div className="z-20 w-full md:w-[45%] lg:w-[40%] h-[58%] md:h-full flex flex-col justify-start md:justify-center pt-20 md:pt-0 relative pointer-events-auto pr-0 md:pr-8">
-          <button 
-            onClick={goBack}
-            data-hoverable="true"
-            className={`absolute top-10 left-0 flex items-center gap-2 font-mono text-xs md:text-sm font-bold uppercase transition-transform hover:-translate-x-2 w-max cursor-pointer ${
-              isColor ? 'text-[#00f0ff]' : 'text-black hover:text-[#ff00ea]'
-            }`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            Back to Home
-          </button>
+          
 
           <AnimatePresence mode="wait">
             <motion.div 

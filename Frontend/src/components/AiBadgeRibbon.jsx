@@ -1,8 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 
 const AiBadgeRibbon = ({ theme }) => {
   const isColor = theme === 'color';
+  const location = useLocation();
+
+  // Agar user chatbot page par hai, toh ribbon render hi nahi hoga (invisible)
+  if (location.pathname === '/chatbot') {
+    return null;
+  }
 
   const handleOpenAi = () => {
     window.dispatchEvent(new CustomEvent('pageTransition', { detail: { path: '/chatbot', label: 'AI AGENT' } }));
@@ -22,10 +29,10 @@ const AiBadgeRibbon = ({ theme }) => {
           : 'bg-black text-[#ccff00] border-black shadow-[4px_4px_0px_0px_#ff00ea]'
       }`}
     >
-      <div className="hidden md:flex relative h-3 w-3">
+      {/* <div className="hidden md:flex relative h-3 w-3">
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00f0ff] opacity-75"></span>
         <span className="relative inline-flex rounded-full h-3 w-3 bg-[#00f0ff]"></span>
-      </div>
+      </div> */}
       <svg className="md:hidden w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <rect x="3" y="7" width="18" height="13" rx="2" />
         <path d="M12 3v4M8 3h8M7.5 12h.01M16.5 12h.01M8 16h8" />
@@ -34,7 +41,7 @@ const AiBadgeRibbon = ({ theme }) => {
         className="hidden md:block font-mono text-xs font-black uppercase tracking-widest"
         style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
       >
-        TALK TO AI CLONE ⚡
+        TALK TO AI CLONE
       </span>
     </motion.div>
   );

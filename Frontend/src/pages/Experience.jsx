@@ -35,11 +35,6 @@ const Experience = ({ theme = "bw" }) => {
           transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
-          <span className={`text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-4 inline-block ${
-            isBW ? 'bg-black/5 text-black border border-black/10' : 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
-          }`}>
-            Career Track
-          </span>
           <h2 className={`text-3xl md:text-5xl font-black tracking-tight mb-3 ${isBW ? 'text-black' : 'bg-gradient-to-r from-cyan-400 via-indigo-300 to-indigo-500 bg-clip-text text-transparent'}`}>
             Experience & Education
           </h2>
@@ -99,11 +94,6 @@ const Experience = ({ theme = "bw" }) => {
                     : 'bg-[#0b0f19]/80 border-white/10'
                 }`}
               >
-                <div className={`absolute -right-4 -top-10 text-[140px] md:text-[180px] font-black select-none pointer-events-none opacity-[0.03] ${
-                  isBW ? 'text-black' : 'text-white'
-                }`}>
-                  {exp.id}
-                </div>
 
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4 relative z-10">
                   <div>
