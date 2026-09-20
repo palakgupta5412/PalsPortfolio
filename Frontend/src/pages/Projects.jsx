@@ -1,30 +1,28 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { projectsData } from '../../config/projects';
 
 const techColors = [ 
   'bg-[#ccff00] text-black', 'bg-[#ff00ea] text-white', 'bg-[#00f0ff] text-black', 'bg-[#ff6600] text-black'
 ];
 
-const ProjectCard = ({ project, index, floatIndex, totalProjects, isColor, textColor }) => {
+const ProjectCard = ({ project, index, activeIndex, totalProjects, isColor, textColor }) => {
   const N = totalProjects;
-
-  const distance = useTransform(floatIndex, (latest) => {
-    const mappedLatest = latest % N;
-    let diff = index - mappedLatest;
-    if (diff > N / 2) diff -= N;
-    if (diff < -N / 2) diff += N;
-    return diff;
-  });
-
-  const yPos = useTransform(distance, d => d * 220); 
-  const scale = useTransform(distance, d => 1 - (Math.abs(d) * 0.15));
-  const opacity = useTransform(distance, d => Math.max(1 - (Math.abs(d) * 0.5), 0));
-  const zIndex = useTransform(distance, d => 50 - Math.round(Math.abs(d) * 10));
+  let distance = index - activeIndex;
+  if (distance > N / 2) distance -= N;
+  if (distance < -N / 2) distance += N;
+  const isVisible = Math.abs(distance) <= 2;
 
   return (
     <motion.div 
-      style={{ y: yPos, scale, opacity, zIndex }}
+      initial={false}
+      animate={{
+        y: distance * 190,
+        scale: 1 - (Math.abs(distance) * 0.12),
+        opacity: isVisible ? Math.max(1 - (Math.abs(distance) * 0.48), 0) : 0,
+        zIndex: 50 - Math.round(Math.abs(distance) * 10),
+      }}
+      transition={{ type: 'spring', stiffness: 260, damping: 28, mass: 0.7 }}
       data-hoverable="true" 
       className={`absolute w-full max-w-sm md:max-w-md aspect-video border-4 flex items-center justify-center overflow-hidden origin-center ${
         isColor ? 'border-white bg-[#030514] shadow-[12px_12px_0px_0px_rgba(255,255,255,0.2)]' : 'border-black bg-[#F4F4F0] shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]'
@@ -45,34 +43,26 @@ const Projects = ({ theme }) => {
   const isColor = theme === 'color';
   const textColor = isColor ? 'text-white' : 'text-black';
   const [activeIndex, setActiveIndex] = useState(0);
-  const containerRef = useRef(null);
+  const lastScrollRef = useRef(0);
   
   const N = projectsData.length;
-  const loopCount = 200; 
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const middleScrollY = window.innerHeight * N * (loopCount / 2);
-      window.scrollTo({ top: middleScrollY, behavior: 'instant' });
-    }, 10);
-    return () => clearTimeout(timer);
-  }, [N]);
-
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
-  const floatIndex = useTransform(scrollYProgress, [0, 1], [0, (N * loopCount) - 1]);
-
-  useMotionValueEvent(floatIndex, "change", (latest) => {
-    const current = Math.round(latest) % N;
-    if(current !== activeIndex) setActiveIndex(current);
-  });
-
   if (!projectsData || projectsData.length === 0) return null;
   const activeProject = projectsData[activeIndex];
 
   const goBack = () => window.dispatchEvent(new CustomEvent('pageTransition', { detail: { path: '/', label: 'HOME' } }));
+  const changeProject = (direction) => {
+    const now = Date.now();
+    if (now - lastScrollRef.current < 500) return;
+    lastScrollRef.current = now;
+    setActiveIndex((current) => (current + direction + N) % N);
+  };
+  const handleWheel = (event) => {
+    event.preventDefault();
+    if (Math.abs(event.deltaY) > 8) changeProject(event.deltaY > 0 ? 1 : -1);
+  };
 
   return (
-    <section id="projects" ref={containerRef} className="relative w-full bg-transparent" style={{ height: `${N * loopCount * 100}vh` }}>
+    <section id="projects" onWheel={handleWheel} className="relative h-screen w-full overflow-hidden bg-transparent overscroll-none">
       <div className="sticky top-0 h-screen w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between px-6 md:px-10 pointer-events-none overflow-hidden">
         
         {/* LEFT COLUMN */}
@@ -144,10 +134,10 @@ const Projects = ({ theme }) => {
           </AnimatePresence>
         </div>
 
-        {/* CENTER COLUMN: CARD STACK */}
+        {/* CENTER COLUMN: CARD STACK WITH FADE EFFECT */}
         <div className="w-full md:w-[45%] h-full flex items-center justify-center relative pointer-events-auto">
           {projectsData.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} floatIndex={floatIndex} totalProjects={N} isColor={isColor} textColor={textColor} />
+            <ProjectCard key={project.id} project={project} index={index} activeIndex={activeIndex} totalProjects={N} isColor={isColor} textColor={textColor} />
           ))}
         </div>
 

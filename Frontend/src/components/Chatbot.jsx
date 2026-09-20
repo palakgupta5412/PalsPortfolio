@@ -26,7 +26,14 @@ const Chatbot = ({ theme }) => {
     const userQuery = input.trim();
     if (!userQuery || loading) return;
 
-    setMessages(prev => [...prev, { sender: 'user', text: userQuery }]);
+    // Build current conversation history for the backend payload
+    const currentHistory = messages.map(msg => ({
+      role: msg.sender === 'user' ? 'user' : 'assistant',
+      content: msg.text
+    }));
+
+    const newMessages = [...messages, { sender: 'user', text: userQuery }];
+    setMessages(newMessages);
     setInput('');
     setLoading(true);
 
@@ -34,13 +41,18 @@ const Chatbot = ({ theme }) => {
       const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: userQuery })
+        // MATCHED WITH BACKEND MODEL: sending 'message' and 'history'
+        body: JSON.stringify({ 
+          message: userQuery, 
+          history: currentHistory 
+        })
       });
 
       if (!res.ok) throw new Error("API offline");
 
       const data = await res.json();
-      setMessages(prev => [...prev, { sender: 'ai', text: data.reply }]);
+      // MATCHED WITH BACKEND RESPONSE: backend returns json with key 'response'
+      setMessages(prev => [...prev, { sender: 'ai', text: data.response }]);
     } catch (err) {
       toast("AI inference backend offline — fallback neural simulation active.", {
         icon: '⚡',
@@ -117,7 +129,7 @@ const Chatbot = ({ theme }) => {
           </div>
         </div>
 
-        {/* MESSAGES SCREEN (Scrollable Internally) */}
+        {/* MESSAGES SCREEN */}
         <div className="flex-1 overflow-y-auto p-4 md:p-6 flex flex-col gap-4 font-mono text-sm">
           {messages.filter(msg => msg.text && msg.text.trim() !== '').map((msg, index) => (
             <div 

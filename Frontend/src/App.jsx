@@ -92,7 +92,7 @@ export default function App() {
       </main>
 
       {/* 8. Footer Hidden on Chatbot Page */}
-      {location.pathname !== '/chatbot' && <Footer theme={theme} />}
+      {location.pathname !== '/chatbot' && location.pathname !== '/projects' && <Footer theme={theme} />}
 
     </div>
   );
