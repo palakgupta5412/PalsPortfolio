@@ -99,7 +99,7 @@ const Experience = ({ theme = "bw" }) => {
                     : 'bg-[#0b0f19]/80 border-white/10'
                 }`}
               >
-                <div className={`absolute -right-4 -bottom-10 text-[140px] md:text-[180px] font-black select-none pointer-events-none opacity-[0.03] ${
+                <div className={`absolute -right-4 -top-10 text-[140px] md:text-[180px] font-black select-none pointer-events-none opacity-[0.03] ${
                   isBW ? 'text-black' : 'text-white'
                 }`}>
                   {exp.id}

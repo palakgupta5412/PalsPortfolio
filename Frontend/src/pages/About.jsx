@@ -154,7 +154,7 @@ const About = ({ theme }) => {
           exit={{ opacity: 0, x: -20 }}
           viewport={{ once: false }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="mt-6 md:mt-8 ml-4 md:ml-6"
+          className="hidden md:block mt-6 md:mt-8 ml-4 md:ml-6"
         >
            <span className={`font-mono text-xs md:text-sm uppercase tracking-widest font-bold px-4 py-2 rounded-lg border ${isColor ? 'bg-white/5 border-white/10 text-[#00f0ff]' : 'bg-black text-white border-black'}`}>
              root@palak:~# <span className="opacity-75">same_curiosity // different_domains.sys</span>
@@ -244,6 +244,18 @@ const About = ({ theme }) => {
               </div>
             ))}
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="md:hidden mt-6 ml-4"
+          >
+            <span className={`font-mono text-xs uppercase tracking-widest font-bold px-4 py-2 rounded-lg border ${isColor ? 'bg-white/5 border-white/10 text-[#00f0ff]' : 'bg-black text-white border-black'}`}>
+              root@palak:~# <span className="opacity-75">same_curiosity // different_domains.sys</span>
+            </span>
+          </motion.div>
         </section>
 
         {/* =========================================

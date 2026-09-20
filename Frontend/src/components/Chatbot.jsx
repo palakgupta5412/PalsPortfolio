@@ -174,13 +174,13 @@ const Chatbot = ({ theme }) => {
             type="submit"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className={`px-5 py-3 rounded-xl font-mono text-xs font-black uppercase tracking-widest border-2 cursor-pointer transition-all ${
+            className={`px-4 py-3 md:px-5 rounded-xl font-mono text-xs font-black uppercase tracking-widest border-2 cursor-pointer transition-all ${
               isColor 
                 ? 'bg-cyan-400 text-black border-cyan-400 hover:bg-white' 
                 : 'bg-[#ff00ea] text-white border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-black'
             }`}
           >
-            TRANSMIT ⚡
+            SEND
           </motion.button>
         </form>
 

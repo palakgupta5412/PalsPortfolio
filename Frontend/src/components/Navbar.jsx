@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 
@@ -7,12 +7,14 @@ const Navbar = ({ theme, activePath }) => {
   // High contrast text colors for both themes
   const textColor = isColor ? 'text-white' : 'text-black';
   const borderColor = isColor ? 'border-white' : 'border-black';
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleNavClick = (e, path, label) => {
     e.preventDefault();
     if (activePath !== path) {
       window.dispatchEvent(new CustomEvent('pageTransition', { detail: { path, label } }));
     }
+    setIsMenuOpen(false);
   };
 
   const navItems = [
@@ -23,7 +25,7 @@ const Navbar = ({ theme, activePath }) => {
   ];
 
   return (
-    <nav className="absolute top-0 left-0 w-full p-6 md:p-8 z-50 flex justify-between items-center pointer-events-auto">
+    <nav className="absolute top-0 left-0 w-full p-4 md:p-8 z-50 flex justify-between items-center pointer-events-auto">
       
       {/* Brand Logo */}
       <motion.div 
@@ -37,7 +39,7 @@ const Navbar = ({ theme, activePath }) => {
       </motion.div>
 
       {/* Navigation Links */}
-      <div className="flex items-center gap-3 md:gap-6">
+      <div className="hidden md:flex items-center gap-3 md:gap-6">
         {navItems.map((item) => {
           const isActive = activePath === item.path;
           return (
@@ -72,6 +74,25 @@ const Navbar = ({ theme, activePath }) => {
 
         <ThemeToggle />
       </div>
+
+      <div className="flex md:hidden items-center gap-2">
+        <ThemeToggle />
+        <button type="button" onClick={() => setIsMenuOpen((open) => !open)} aria-label="Toggle navigation menu" aria-expanded={isMenuOpen} className={`w-11 h-11 flex flex-col items-center justify-center gap-1.5 border-2 ${borderColor} ${isColor ? 'text-white' : 'text-black'}`}>
+          <span className="w-5 border-t-2 border-current"></span>
+          <span className="w-5 border-t-2 border-current"></span>
+          <span className="w-5 border-t-2 border-current"></span>
+        </button>
+      </div>
+
+      {isMenuOpen && (
+        <div className={`absolute top-full right-4 mt-2 w-52 p-2 border-2 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] ${isColor ? 'bg-[#030514] border-white text-white' : 'bg-[#F4F4F0] border-black text-black'}`}>
+          {[...navItems, { label: 'CONTACT', path: '/contact' }].map((item) => (
+            <button key={item.path} type="button" onClick={(event) => handleNavClick(event, item.path, item.label)} className={`block w-full px-3 py-3 text-left font-sans text-sm font-black uppercase ${activePath === item.path ? (isColor ? 'bg-white text-black' : 'bg-black text-white') : 'hover:bg-[#00f0ff] hover:text-black'}`}>
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
     </nav>
   );
 };

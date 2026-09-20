@@ -47,7 +47,7 @@ const BouncyButton = ({ children, isColor, onClick }) => (
     whileHover={{ scale: 1.05, rotate: -2 }} 
     whileTap={{ scale: 0.95, rotate: 2 }} 
     onClick={onClick}
-    className={`relative px-8 py-4 font-sans font-black text-lg md:text-xl uppercase border-4 pointer-events-auto cursor-pointer ${
+    className={`relative px-5 py-3 md:px-8 md:py-4 font-sans font-black text-base md:text-xl uppercase border-4 pointer-events-auto cursor-pointer ${
       isColor 
         ? 'bg-transparent text-white border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:bg-white hover:text-black' 
         : 'bg-[#00f0ff] text-black border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:bg-[#ccff00]'
@@ -95,9 +95,9 @@ const Hero = ({ theme }) => {
         </div>
       )}
 
-      <FloatingDecorations isColor={isColor} />
+      <div className="hidden md:block"><FloatingDecorations isColor={isColor} /></div>
       
-      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col-reverse lg:flex-row justify-between items-center relative z-20 gap-12">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col lg:flex-row justify-between items-center relative z-20 gap-8 md:gap-12">
         <div className="w-full lg:w-[55%] flex flex-col gap-6" data-hoverable="true">
           <div className="relative pointer-events-auto">
             <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", bounce: 0.5 }}>
@@ -130,7 +130,7 @@ const Hero = ({ theme }) => {
           </div>
         </div>
 
-        <div className="w-full lg:w-[45%] h-[400px] md:h-[550px] flex items-center justify-center relative pointer-events-auto">
+        <div className="w-full lg:w-[45%] h-[260px] md:h-[550px] flex items-center justify-center relative pointer-events-auto">
           <motion.div style={{ x: cardX, y: cardY }} className="absolute inset-0 z-20 pointer-events-none hidden sm:block">
             <div className={`absolute p-4 border-4 top-[5%] right-[5%] rotate-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ${isColor ? 'bg-black/90 text-white border-white' : 'bg-[#ccff00] text-black border-black'}`}><h3 className="font-black text-sm">AI WORKFLOWS</h3></div>
             <div className={`absolute p-4 border-4 bottom-[10%] left-[0%] -rotate-3 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ${isColor ? 'bg-black/90 text-white border-white' : 'bg-[#00f0ff] text-black border-black'}`}><h3 className="font-black text-sm">GSAP ENGINE</h3></div>
@@ -142,7 +142,7 @@ const Hero = ({ theme }) => {
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             onClick={goToChatbot}
             data-cursor-label="CHAT WITH ME"
-            className="relative z-50 w-64 h-64 md:w-80 md:h-80 flex items-center justify-center pointer-events-auto cursor-pointer"
+            className="relative z-50 w-52 h-52 md:w-80 md:h-80 flex items-center justify-center pointer-events-auto cursor-pointer"
           >
             <img src="/robot.png" alt="Robot" className="w-full h-full object-contain drop-shadow-2xl z-50" />
           </motion.div>
