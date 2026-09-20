@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+
 const Chatbot = ({ theme }) => {
   const isColor = theme === 'color';
   const [messages, setMessages] = useState([
@@ -29,7 +31,7 @@ const Chatbot = ({ theme }) => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8001/api/chat", {
+      const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: userQuery })
