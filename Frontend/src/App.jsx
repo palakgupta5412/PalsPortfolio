@@ -74,10 +74,10 @@ export default function App() {
       <AiBadgeRibbon theme={theme} />
 
       {/* 5. Floating Bottom-Right Theme Toggle Button */}
-      <ThemeToggle theme={theme} setTheme={setTheme} />
+      <ThemeToggle theme={theme} setTheme={setTheme} className="max-md:hidden" />
 
       {/* 6. Navbar */}
-      <Navbar theme={theme} activePath={location.pathname} />
+      <Navbar theme={theme} setTheme={setTheme} activePath={location.pathname} />
 
       {/* 7. Main Application Routes */}
       <main className="w-full">

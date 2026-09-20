@@ -77,7 +77,7 @@ const Projects = ({ theme }) => {
       <div className="h-screen w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between px-6 md:px-10 pt-16 pb-3 md:py-0 pointer-events-none overflow-hidden">
         
         {/* LEFT COLUMN */}
-        <div className="z-20 w-full md:w-[45%] lg:w-[40%] h-[65%] md:h-full flex flex-col justify-start md:justify-center pt-20 md:pt-0 relative pointer-events-auto pr-0 md:pr-8">
+        <div className="z-20 w-full md:w-[45%] lg:w-[40%] h-[58%] md:h-full flex flex-col justify-start md:justify-center pt-20 md:pt-0 relative pointer-events-auto pr-0 md:pr-8">
           <button 
             onClick={goBack}
             data-hoverable="true"
@@ -146,7 +146,7 @@ const Projects = ({ theme }) => {
         </div>
 
         {/* CENTER COLUMN: CARD STACK WITH FADE EFFECT */}
-        <div className="z-10 w-full md:w-[45%] h-[35%] md:h-full flex items-center justify-center relative pointer-events-auto">
+        <div className="z-10 w-full md:w-[45%] h-[42%] md:h-full flex items-center justify-center relative pointer-events-auto">
           {projectsData.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} activeIndex={activeIndex} totalProjects={N} isColor={isColor} textColor={textColor} />
           ))}

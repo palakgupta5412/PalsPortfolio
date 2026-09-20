@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import ThemeToggle from './ThemeToggle';
 
-const Navbar = ({ theme, activePath }) => {
+const Navbar = ({ theme, setTheme, activePath }) => {
   const isColor = theme === 'color';
   // High contrast text colors for both themes
   const textColor = isColor ? 'text-white' : 'text-black';
@@ -74,6 +75,7 @@ const Navbar = ({ theme, activePath }) => {
       </div>
 
       <div className="flex md:hidden items-center gap-2">
+        <ThemeToggle theme={theme} setTheme={setTheme} embedded />
         <button type="button" onClick={() => setIsMenuOpen((open) => !open)} aria-label="Toggle navigation menu" aria-expanded={isMenuOpen} className={`w-11 h-11 flex flex-col items-center justify-center gap-1.5 border-2 ${borderColor} ${isColor ? 'text-white' : 'text-black'}`}>
           <span className="w-5 border-t-2 border-current"></span>
           <span className="w-5 border-t-2 border-current"></span>
