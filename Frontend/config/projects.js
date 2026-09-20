@@ -46,7 +46,7 @@ export const projectsData = [
         'technical_skills': [],
         'live_link': '',
         'github_link': 'https://github.com/palakgupta5412/LeetoAI',
-        'video': '/leeto.mp4',
+        'video': 'https://res.cloudinary.com/dc8ryewn6/video/upload/v1789906897/Leeto_ai_10sec_orange_black_lxzypu.mp4',
         'image': ''
     },
     {
@@ -56,7 +56,7 @@ export const projectsData = [
         'technical_skills': ['React', 'FastAPI', 'Python', 'LLMs'],
         'live_link': '',
         'github_link': '',
-        'video': '',
+        'video': 'https://res.cloudinary.com/dc8ryewn6/video/upload/v1789906897/RepoDoc_ai_10sec_blue_theme_h264_jlwaqt.mp4',
         'image': ''
     }
 ]
